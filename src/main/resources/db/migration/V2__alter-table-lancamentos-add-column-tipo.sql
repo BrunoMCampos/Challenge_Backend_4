@@ -1,0 +1,1 @@
+alter table lancamentos add column tipo varchar(7) not null;
