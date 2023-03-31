@@ -1,6 +1,5 @@
 package br.com.alura.financas.infra.exception;
 
-import br.com.alura.financas.validacao.ValidacaoException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;

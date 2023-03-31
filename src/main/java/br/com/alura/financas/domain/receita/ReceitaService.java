@@ -1,7 +1,6 @@
 package br.com.alura.financas.domain.receita;
 
-import br.com.alura.financas.domain.lancamento.*;
-import br.com.alura.financas.validacao.ValidacaoException;
+import br.com.alura.financas.infra.exception.ValidacaoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,29 +10,28 @@ import java.util.Optional;
 public class ReceitaService {
 
     @Autowired
-    private LancamentoRepository lancamentoRepository;
+    private ReceitaRepository receitaRepository;
 
-    public Lancamento cadastrar(DadosCadastrarLancamento dados) {
-        Optional<Lancamento> optionalLancamento = lancamentoRepository.findReceitaComMesmaDescricaoNoMesmoMesEAno(dados.descricao(), dados.data());
-        if (optionalLancamento.isPresent()) {
-            throw new ValidacaoException("Existem receitas com a mesma descrição já cadastradas neste mês.");
+    public Receita cadastrar(DadosCadastrarReceita dados) {
+        Optional<Receita> optionalReceita = receitaRepository.findReceitaComMesmaDescricaoNoMesmoMesEAno(dados.descricao(), dados.data());
+        if (optionalReceita.isPresent()) {
+            throw new ValidacaoException("Já existe uma receita com a mesma descrição cadastrada neste mês.");
         } else {
-            Lancamento lancamento = new Lancamento(dados);
-            lancamento.setTipo(TipoLancamentoEnum.RECEITA);
-            return lancamentoRepository.save(lancamento);
+            Receita receita = new Receita(dados);
+            return receitaRepository.save(receita);
         }
     }
 
-    public DadosDetalharLancamento atualizar(Lancamento lancamento, DadosAlteracaoLancamento dados) {
+    public DadosDetalharReceita atualizar(Receita receita, DadosAlterarReceita dados) {
         if (dados.descricao() != null) {
-            lancamento.setDescricao(dados.descricao());
+            receita.setDescricao(dados.descricao());
         }
         if(dados.valor() != null){
-            lancamento.setValor(dados.valor());
+            receita.setValor(dados.valor());
         }
         if(dados.data() != null){
-            lancamento.setData(dados.data());
+            receita.setData(dados.data());
         }
-        return new DadosDetalharLancamento(lancamento);
+        return new DadosDetalharReceita(receita);
     }
 }

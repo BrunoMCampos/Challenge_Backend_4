@@ -1,4 +1,4 @@
-package br.com.alura.financas.validacao;
+package br.com.alura.financas.infra.exception;
 
 public class ValidacaoException extends RuntimeException {
     public ValidacaoException(String mensagem) {

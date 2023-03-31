@@ -1,8 +1,7 @@
 package br.com.alura.financas.controller;
 
-import br.com.alura.financas.domain.lancamento.*;
-import br.com.alura.financas.domain.receita.ReceitaService;
-import br.com.alura.financas.validacao.ValidacaoException;
+import br.com.alura.financas.domain.receita.*;
+import br.com.alura.financas.infra.exception.ValidacaoException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,54 +19,65 @@ import java.util.Optional;
 public class ReceitasController {
 
     @Autowired
-    private LancamentoRepository lancamentoRepository;
+    private ReceitaRepository receitaRepository;
 
     @Autowired
     private ReceitaService receita;
 
     @PostMapping
     @Transactional
-    public ResponseEntity<DadosDetalharLancamento> cadastrar(@RequestBody @Valid DadosCadastrarLancamento dados, UriComponentsBuilder uriBuilder){
-        Lancamento receita = this.receita.cadastrar(dados);
+    public ResponseEntity<DadosDetalharReceita> cadastrar(@RequestBody @Valid DadosCadastrarReceita dados, UriComponentsBuilder uriBuilder) {
+        Receita receita = this.receita.cadastrar(dados);
         URI uri = uriBuilder.path("receitas/{idReceita}").buildAndExpand(receita.getId()).toUri();
-        return ResponseEntity.created(uri).body(new DadosDetalharLancamento(receita));
+        return ResponseEntity.created(uri).body(new DadosDetalharReceita(receita));
     }
 
     @GetMapping("{idReceita}")
-    public ResponseEntity<DadosDetalharLancamento> detalhar(@PathVariable Long idReceita){
-        Optional<Lancamento> optionalReceita = lancamentoRepository.findByIdAndTipo(idReceita, TipoLancamentoEnum.RECEITA);
-        if(optionalReceita.isEmpty()){
+    public ResponseEntity<DadosDetalharReceita> detalhar(@PathVariable Long idReceita) {
+        Optional<Receita> optionalReceita = receitaRepository.findById(idReceita);
+        if (optionalReceita.isEmpty()) {
             throw new ValidacaoException("Receita não encontrada.");
         } else {
-            return ResponseEntity.ok().body(new DadosDetalharLancamento(optionalReceita.get()));
+            return ResponseEntity.ok().body(new DadosDetalharReceita(optionalReceita.get()));
         }
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemLancamentos>> listar(Pageable pageable){
-        Page<DadosListagemLancamentos> page = lancamentoRepository.findAllByTipo(pageable, TipoLancamentoEnum.RECEITA).map(DadosListagemLancamentos::new);
-        return ResponseEntity.ok().body(page);
+    public ResponseEntity<Page<DadosListagemReceitas>> listar(Pageable pageable, @RequestParam(required = false) String descricao) {
+        Page<DadosListagemReceitas> receitas;
+        if (descricao != null) {
+            receitas = receitaRepository.findByDescricaoContaining(pageable, descricao).map(DadosListagemReceitas::new);
+        } else {
+            receitas = receitaRepository.findAll(pageable).map(DadosListagemReceitas::new);
+        }
+        return ResponseEntity.ok().body(receitas);
+    }
+
+    @GetMapping("{ano}/{mes}")
+    public ResponseEntity<Page<DadosListagemReceitas>> listarPorMesEAno(Pageable pageable,@PathVariable Integer ano, @PathVariable Integer mes){
+        Page<DadosListagemReceitas> receitas = receitaRepository.findAllByMesEAno(pageable, ano, mes).map(DadosListagemReceitas::new);
+        return ResponseEntity.ok().body(receitas);
     }
 
     @DeleteMapping("{idReceita}")
     @Transactional
-    public ResponseEntity<String> deletar(@PathVariable Long idReceita){
-        Optional<Lancamento> optionalReceita = lancamentoRepository.findByIdAndTipo(idReceita, TipoLancamentoEnum.RECEITA);
-        if(optionalReceita.isEmpty()){
+    public ResponseEntity<String> deletar(@PathVariable Long idReceita) {
+        Optional<Receita> optionalReceita = receitaRepository.findById(idReceita);
+        if (optionalReceita.isEmpty()) {
             throw new ValidacaoException("Receita não encontrada");
         }
-        lancamentoRepository.delete(optionalReceita.get());
+        receitaRepository.delete(optionalReceita.get());
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{idReceita}")
     @Transactional
-    public ResponseEntity<DadosDetalharLancamento> atualizar(@PathVariable Long idReceita, @RequestBody @Valid DadosAlteracaoLancamento dados){
-        Optional<Lancamento> optionalReceita = lancamentoRepository.findByIdAndTipo(idReceita, TipoLancamentoEnum.RECEITA);
-        if(optionalReceita.isEmpty()){
+    public ResponseEntity<DadosDetalharReceita> atualizar(@PathVariable Long idReceita, @RequestBody @Valid DadosAlterarReceita dados) {
+        Optional<Receita> optionalReceita = receitaRepository.findById(idReceita);
+        if (optionalReceita.isEmpty()) {
             throw new ValidacaoException("Receita não encontrada");
         }
-        DadosDetalharLancamento lancamentoAtualizado = receita.atualizar(optionalReceita.get(), dados);
+        DadosDetalharReceita lancamentoAtualizado = receita.atualizar(optionalReceita.get(), dados);
         return ResponseEntity.ok().body(lancamentoAtualizado);
     }
 

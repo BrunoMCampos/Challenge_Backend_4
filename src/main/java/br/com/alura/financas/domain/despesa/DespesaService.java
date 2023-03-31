@@ -1,7 +1,6 @@
 package br.com.alura.financas.domain.despesa;
 
-import br.com.alura.financas.domain.lancamento.*;
-import br.com.alura.financas.validacao.ValidacaoException;
+import br.com.alura.financas.infra.exception.ValidacaoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,29 +10,31 @@ import java.util.Optional;
 public class DespesaService {
 
     @Autowired
-    private LancamentoRepository lancamentoRepository;
+    private DespesaRepository despesaRepository;
 
-    public Lancamento cadastrar(DadosCadastrarLancamento dados) {
-        Optional<Lancamento> optionalLancamento = lancamentoRepository.findReceitaComMesmaDescricaoNoMesmoMesEAno(dados.descricao(), dados.data());
-        if (optionalLancamento.isPresent()) {
-            throw new ValidacaoException("Existem despesas com a mesma descrição já cadastradas neste mês.");
+    public Despesa cadastrar(DadosCadastrarDespesa dados) {
+        Optional<Despesa> optionalDespesa = despesaRepository.findDespesaComMesmaDescricaoNoMesmoMesEAno(dados.descricao(), dados.data());
+        if (optionalDespesa.isPresent()) {
+            throw new ValidacaoException("Já existe uma despesa com a mesma descrição cadastrada neste mês.");
         } else {
-            Lancamento lancamento = new Lancamento(dados);
-            lancamento.setTipo(TipoLancamentoEnum.DESPESA);
-            return lancamentoRepository.save(lancamento);
+            Despesa despesa = new Despesa(dados);
+            return despesaRepository.save(despesa);
         }
     }
 
-    public DadosDetalharLancamento atualizar(Lancamento lancamento, DadosAlteracaoLancamento dados) {
+    public DadosDetalharDespesa atualizar(Despesa despesa, DadosAlterarDespesa dados) {
         if (dados.descricao() != null) {
-            lancamento.setDescricao(dados.descricao());
+            despesa.setDescricao(dados.descricao());
         }
         if(dados.valor() != null){
-            lancamento.setValor(dados.valor());
+            despesa.setValor(dados.valor());
         }
         if(dados.data() != null){
-            lancamento.setData(dados.data());
+            despesa.setData(dados.data());
         }
-        return new DadosDetalharLancamento(lancamento);
+        if(dados.categoria() != null){
+            despesa.setCategoria(dados.categoria());
+        }
+        return new DadosDetalharDespesa(despesa);
     }
 }
