@@ -12,9 +12,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("unused")
 @Service
 public class ResumoService {
 
+    @SuppressWarnings("unused")
     public DadosResumo gerarResumo(Page<Receita> receitas, Page<Despesa> despesas) {
         BigDecimal valorTotalReceitas = receitas.stream().map(Receita::getValor).reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal valorTotalDespesas = despesas.stream().map(Despesa::getValor).reduce(BigDecimal.ZERO, BigDecimal::add);

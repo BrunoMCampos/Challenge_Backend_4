@@ -1,7 +1,7 @@
 package br.com.alura.financas.controller;
 
 import br.com.alura.financas.domain.despesa.*;
-import br.com.alura.financas.infra.exception.ValidacaoException;
+import br.com.alura.financas.infra.exception.DadosErro;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("despesas")
@@ -22,24 +21,23 @@ public class DespesaController {
     private DespesaRepository despesaRepository;
 
     @Autowired
-    private DespesaService despesa;
+    private DespesaService despesaService;
 
     @PostMapping
     @Transactional
-    public ResponseEntity<DadosDetalharDespesa> cadastrar(@RequestBody @Valid DadosCadastrarDespesa dados, UriComponentsBuilder uriBuilder) {
-        Despesa despesa = this.despesa.cadastrar(dados);
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastrarDespesa dados, UriComponentsBuilder uriBuilder) {
+        Despesa despesa = this.despesaService.cadastrar(dados);
+        if(despesa == null){
+            return ResponseEntity.badRequest().body(new DadosErro("Descrição", "Descrição já cadastrada dentro deste mês"));
+        }
         URI uri = uriBuilder.path("despesas/{idDespesa}").buildAndExpand(despesa.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosDetalharDespesa(despesa));
     }
 
     @GetMapping("{idDespesa}")
     public ResponseEntity<DadosDetalharDespesa> detalhar(@PathVariable Long idDespesa) {
-        Optional<Despesa> optionalLancamento = despesaRepository.findById(idDespesa);
-        if (optionalLancamento.isEmpty()) {
-            throw new ValidacaoException("Despesa não encontrada.");
-        } else {
-            return ResponseEntity.ok().body(new DadosDetalharDespesa(optionalLancamento.get()));
-        }
+        Despesa despesa = despesaRepository.getReferenceById(idDespesa);
+        return ResponseEntity.ok().body(new DadosDetalharDespesa(despesa));
     }
 
     @GetMapping
@@ -54,7 +52,7 @@ public class DespesaController {
     }
 
     @GetMapping("{ano}/{mes}")
-    public ResponseEntity<Page<DadosListagemDespesas>> listarPorMesEAno(Pageable pageable, @PathVariable Integer ano, @PathVariable Integer mes){
+    public ResponseEntity<Page<DadosListagemDespesas>> listarPorMesEAno(Pageable pageable, @PathVariable Integer ano, @PathVariable Integer mes) {
         Page<DadosListagemDespesas> despesas = despesaRepository.findAllByMesEAno(pageable, ano, mes).map(DadosListagemDespesas::new);
         return ResponseEntity.ok().body(despesas);
     }
@@ -62,22 +60,19 @@ public class DespesaController {
     @DeleteMapping("{idDespesa}")
     @Transactional
     public ResponseEntity<String> deletar(@PathVariable Long idDespesa) {
-        Optional<Despesa> optionalDespesa = despesaRepository.findById(idDespesa);
-        if (optionalDespesa.isEmpty()) {
-            throw new ValidacaoException("Despesa não encontrada.");
-        }
-        despesaRepository.delete(optionalDespesa.get());
+        Despesa despesa = despesaRepository.getReferenceById(idDespesa);
+        despesaRepository.delete(despesa);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{idDespesa}")
     @Transactional
-    public ResponseEntity<DadosDetalharDespesa> atualizar(@PathVariable Long idDespesa, @RequestBody @Valid DadosAlterarDespesa dados) {
-        Optional<Despesa> optionalDespesa = despesaRepository.findById(idDespesa);
-        if (optionalDespesa.isEmpty()) {
-            throw new ValidacaoException("Despesa não encontrada");
+    public ResponseEntity atualizar(@PathVariable Long idDespesa, @RequestBody @Valid DadosAlterarDespesa dados) {
+        Despesa despesa = despesaRepository.getReferenceById(idDespesa);
+        DadosDetalharDespesa despesaAtualizada = despesaService.atualizar(despesa, dados);
+        if(despesaAtualizada == null){
+            return ResponseEntity.badRequest().body(new DadosErro("Descrição", "Descrição já cadastrada dentro deste mês"));
         }
-        DadosDetalharDespesa despesaAtualizada = despesa.atualizar(optionalDespesa.get(), dados);
         return ResponseEntity.ok().body(despesaAtualizada);
     }
 

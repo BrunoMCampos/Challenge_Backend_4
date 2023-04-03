@@ -1,7 +1,7 @@
 package br.com.alura.financas.controller;
 
 import br.com.alura.financas.domain.receita.*;
-import br.com.alura.financas.infra.exception.ValidacaoException;
+import br.com.alura.financas.infra.exception.DadosErro;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,34 +12,32 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("receitas")
-public class ReceitasController {
+public class ReceitaController {
 
     @Autowired
     private ReceitaRepository receitaRepository;
 
     @Autowired
-    private ReceitaService receita;
+    private ReceitaService receitaService;
 
     @PostMapping
     @Transactional
-    public ResponseEntity<DadosDetalharReceita> cadastrar(@RequestBody @Valid DadosCadastrarReceita dados, UriComponentsBuilder uriBuilder) {
-        Receita receita = this.receita.cadastrar(dados);
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastrarReceita dados, UriComponentsBuilder uriBuilder) {
+        Receita receita = this.receitaService.cadastrar(dados);
+        if(receita == null){
+            return ResponseEntity.badRequest().body(new DadosErro("Descrição", "Descrição já cadastrada dentro deste mês"));
+        }
         URI uri = uriBuilder.path("receitas/{idReceita}").buildAndExpand(receita.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosDetalharReceita(receita));
     }
 
     @GetMapping("{idReceita}")
     public ResponseEntity<DadosDetalharReceita> detalhar(@PathVariable Long idReceita) {
-        Optional<Receita> optionalReceita = receitaRepository.findById(idReceita);
-        if (optionalReceita.isEmpty()) {
-            throw new ValidacaoException("Receita não encontrada.");
-        } else {
-            return ResponseEntity.ok().body(new DadosDetalharReceita(optionalReceita.get()));
-        }
+        Receita receita = receitaRepository.getReferenceById(idReceita);
+        return ResponseEntity.ok().body(new DadosDetalharReceita(receita));
     }
 
     @GetMapping
@@ -62,23 +60,20 @@ public class ReceitasController {
     @DeleteMapping("{idReceita}")
     @Transactional
     public ResponseEntity<String> deletar(@PathVariable Long idReceita) {
-        Optional<Receita> optionalReceita = receitaRepository.findById(idReceita);
-        if (optionalReceita.isEmpty()) {
-            throw new ValidacaoException("Receita não encontrada");
-        }
-        receitaRepository.delete(optionalReceita.get());
+        Receita receita = receitaRepository.getReferenceById(idReceita);
+        receitaRepository.delete(receita);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{idReceita}")
     @Transactional
-    public ResponseEntity<DadosDetalharReceita> atualizar(@PathVariable Long idReceita, @RequestBody @Valid DadosAlterarReceita dados) {
-        Optional<Receita> optionalReceita = receitaRepository.findById(idReceita);
-        if (optionalReceita.isEmpty()) {
-            throw new ValidacaoException("Receita não encontrada");
+    public ResponseEntity atualizar(@PathVariable Long idReceita, @RequestBody @Valid DadosAlterarReceita dados) {
+        Receita receita = receitaRepository.getReferenceById(idReceita);
+        DadosDetalharReceita receitaAtualizada = receitaService.atualizar(receita, dados);
+        if(receitaAtualizada == null){
+            return ResponseEntity.badRequest().body(new DadosErro("Descrição", "Descrição já cadastrada dentro deste mês"));
         }
-        DadosDetalharReceita lancamentoAtualizado = receita.atualizar(optionalReceita.get(), dados);
-        return ResponseEntity.ok().body(lancamentoAtualizado);
+        return ResponseEntity.ok().body(receitaAtualizada);
     }
 
 }

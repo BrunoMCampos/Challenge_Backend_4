@@ -1,7 +1,5 @@
 package br.com.alura.financas.domain.receita;
 
-import br.com.alura.financas.domain.despesa.Categoria;
-import br.com.alura.financas.domain.despesa.DadosCadastrarDespesa;
 import jakarta.persistence.*;
 import lombok.*;
 

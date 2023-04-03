@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.time.LocalDate;
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 public interface ReceitaRepository extends JpaRepository<Receita, Long> {
 
     @Query("select r from Receita r where r.descricao = :descricao and month(r.data) = month(:data) and year(r.data) = year(:data)")
