@@ -162,7 +162,7 @@ class DespesaControllerTest {
     @DisplayName("Deveria devolver código http 400 quando recebendo um id inexistente")
     void detalharCenario1() throws Exception {
         MockHttpServletResponse response = mvc.perform(get("/despesas/99999")).andReturn().getResponse();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
     }
 
     @Test
@@ -251,14 +251,14 @@ class DespesaControllerTest {
     }
 
     @Test
-    @DisplayName("Deveria devolver código http 400 quando recebendo um id inválido")
+    @DisplayName("Deveria devolver código http 404 quando recebendo um id inválido")
     void deletarCenario1() throws Exception {
         MockHttpServletResponse response = mvc.perform(delete("/despesas/99999")).andReturn().getResponse();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
     }
 
     @Test
-    @DisplayName("Deveria devolver código http 200 e o json quando recebendo um id válido")
+    @DisplayName("Deveria devolver código http 204 e o json quando recebendo um id válido")
     void deletarCenario2() throws Exception {
         cadastrarDespesa(despesaAlimentacao);
 
@@ -269,7 +269,7 @@ class DespesaControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
 
         response = mvc.perform(get(url)).andReturn().getResponse();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
     }
 
     @Test

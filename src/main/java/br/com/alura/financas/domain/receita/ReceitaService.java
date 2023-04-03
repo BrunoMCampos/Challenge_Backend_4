@@ -26,7 +26,7 @@ public class ReceitaService {
     @SuppressWarnings("unused")
     public DadosDetalharReceita atualizar(Receita receita, DadosAlterarReceita dados) {
         if (dados.descricao() != null && !dados.descricao().equals(receita.getDescricao())) {
-            Optional<Receita> optionalReceita = receitaRepository.findById(receita.getId());
+            Optional<Receita> optionalReceita = receitaRepository.findByDescricao(dados.descricao());
             if(optionalReceita.isPresent()){
                 return null;
             }

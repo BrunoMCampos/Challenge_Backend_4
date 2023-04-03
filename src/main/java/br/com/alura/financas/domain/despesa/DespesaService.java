@@ -24,7 +24,7 @@ public class DespesaService {
 
     public DadosDetalharDespesa atualizar(Despesa despesa, DadosAlterarDespesa dados) {
         if (dados.descricao() != null && !dados.descricao().equals(despesa.getDescricao())) {
-            Optional<Despesa> optionalDespesa = despesaRepository.findById(despesa.getId());
+            Optional<Despesa> optionalDespesa = despesaRepository.findByDescricao(dados.descricao());
             if (optionalDespesa.isPresent()) {
                 return null;
             } else {

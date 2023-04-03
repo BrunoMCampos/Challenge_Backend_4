@@ -18,4 +18,6 @@ public interface DespesaRepository extends JpaRepository<Despesa,Long> {
 
     @Query("select d from Despesa d where month(d.data) = :mes and year(d.data) = :ano")
     Page<Despesa> findAllByMesEAno(Pageable pageable, Integer ano, Integer mes);
+
+    Optional<Despesa> findByDescricao(String descricao);
 }

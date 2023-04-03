@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("despesas")
@@ -36,8 +37,11 @@ public class DespesaController {
 
     @GetMapping("{idDespesa}")
     public ResponseEntity<DadosDetalharDespesa> detalhar(@PathVariable Long idDespesa) {
-        Despesa despesa = despesaRepository.getReferenceById(idDespesa);
-        return ResponseEntity.ok().body(new DadosDetalharDespesa(despesa));
+        Optional<Despesa> optionalDespesa = despesaRepository.findById(idDespesa);
+        if(optionalDespesa.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(new DadosDetalharDespesa(optionalDespesa.get()));
     }
 
     @GetMapping
@@ -60,8 +64,11 @@ public class DespesaController {
     @DeleteMapping("{idDespesa}")
     @Transactional
     public ResponseEntity<String> deletar(@PathVariable Long idDespesa) {
-        Despesa despesa = despesaRepository.getReferenceById(idDespesa);
-        despesaRepository.delete(despesa);
+        Optional<Despesa> optionalDespesa = despesaRepository.findById(idDespesa);
+        if(optionalDespesa.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        despesaRepository.delete(optionalDespesa.get());
         return ResponseEntity.noContent().build();
     }
 

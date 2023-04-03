@@ -18,4 +18,6 @@ public interface ReceitaRepository extends JpaRepository<Receita, Long> {
 
     @Query("select r from Receita r where month(r.data) = :mes and year(r.data) = :ano")
     Page<Receita> findAllByMesEAno(Pageable pageable, Integer ano, Integer mes);
+
+    Optional<Receita> findByDescricao(String descricao);
 }

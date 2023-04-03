@@ -3,6 +3,7 @@ package br.com.alura.financas.controller;
 import br.com.alura.financas.domain.receita.*;
 import br.com.alura.financas.infra.exception.DadosErro;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("receitas")
@@ -36,8 +38,11 @@ public class ReceitaController {
 
     @GetMapping("{idReceita}")
     public ResponseEntity<DadosDetalharReceita> detalhar(@PathVariable Long idReceita) {
-        Receita receita = receitaRepository.getReferenceById(idReceita);
-        return ResponseEntity.ok().body(new DadosDetalharReceita(receita));
+        Optional<Receita> optionalReceita = receitaRepository.findById(idReceita);
+        if(optionalReceita.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(new DadosDetalharReceita(optionalReceita.get()));
     }
 
     @GetMapping
@@ -60,8 +65,11 @@ public class ReceitaController {
     @DeleteMapping("{idReceita}")
     @Transactional
     public ResponseEntity<String> deletar(@PathVariable Long idReceita) {
-        Receita receita = receitaRepository.getReferenceById(idReceita);
-        receitaRepository.delete(receita);
+        Optional<Receita> optionalReceita = receitaRepository.findById(idReceita);
+        if(optionalReceita.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        receitaRepository.delete(optionalReceita.get());
         return ResponseEntity.noContent().build();
     }
 
