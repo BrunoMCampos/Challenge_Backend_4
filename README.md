@@ -8,6 +8,7 @@
 ![Badge de linguagem utiliaza Java](https://img.shields.io/badge/Linguagem-JAVA-yellow)
 ![Badge de Status do projeto como em desenvolvimento](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellowgreen)
 ![Badge de Desenvolvedor com o nome Bruno](https://img.shields.io/badge/Desenvolvedor-Bruno-green)
+![Badge de Token JWT verde com Auth0](https://img.shields.io/badge/TokenJWT-Auth0-green)
 
 ---
 
@@ -50,7 +51,7 @@ Também utilizei de classes Service para poder gerir melhor as validações, rea
 ---
 
 ### 📆 Semana 2
-Nesta [segunda semana] recebemos um novo quadro no Trello com as informações que precisariam ser incluidas ou alteradas no sistema, considerando que ele foi liberado para a utilização e foi recebido o feedback dos clientes da aplicação, sendo necessário realizar adaptações no banco de dados e o desenvolvimento de novas funcionalidades.
+Nesta [segunda semana](https://trello.com/b/4V5WcXVi/challenge-backend-4-semana-2) recebemos um novo quadro no Trello com as informações que precisariam ser incluidas ou alteradas no sistema, considerando que ele foi liberado para a utilização e foi recebido o feedback dos clientes da aplicação, sendo necessário realizar adaptações no banco de dados e o desenvolvimento de novas funcionalidades.
 
 ![Card Trello](https://user-images.githubusercontent.com/100006703/229295595-2fdbf6df-57e7-4ad7-850e-b25ab370aaf1.png)
 
@@ -67,4 +68,26 @@ Por fim criei testes automatizados focando apenas nos controllers com testes que
 - [x] Criar um endpoint para gerar um resumo mensal das despesas e receitas;
 - [x] Criar o endpoint para a busca de receitas e despesas por descrição.
 
+---
+
+### 📆 Semanas 3 e 4
+Nestas [semanas](https://trello.com/b/kLJ8pbV2/challenge-backend-4-semanas-3-e-4) recebemos as tarefas de implementar autenticação e também o deploy da aplicação. Infelizmente não consegui realizar o deploy, ainda preciso de mais conhecimentos e deixarei essa tarefa em aberto para realizar a implementação no futuro quando tiver mais experiência.
+
+#### 🔨 Forma de elaboração
+Para a implementação da parte de segurança foram adicionadas as dependências do Spring Security e também do [token JWT fornecido pelo Auth0](https://github.com/auth0/java-jwt), com isso a implementação foi realizada com BCrypt e com a criação de um novo endpoint para login, onde se é possível realizar o acesso com um usuário padrão, sendo enviado em um json os dados:
+
+```
+{ 
+  "login": "bruno.campos@financas.com.br",
+  "senha": "123456"
+}
+```
+
+A partir daí se recebe um Token de acesso que será utilizado para realizar as requisições para todos os outros endpoints, que agora estarão bloqueados para requisições sem autorização.
+
+---
+
+#### 📜 Tarefas da Semana 3
+- [x] Aumentar a segurança da API gerando um novo endpoint para login e realizando a verificação stateless para acesso em todas as requisições.
+- [ ] Realizar o deploy da aplicação
 ---
