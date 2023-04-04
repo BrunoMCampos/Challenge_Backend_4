@@ -4,7 +4,7 @@
 ![Badge verde do MySQL](https://img.shields.io/badge/MySQL-green)
 ![Badge verde do Spring Boot 3.0.5](https://img.shields.io/badge/Spring%20Boot-3.0.5-green)
 ![Badge verde de Gestão de Dependências Maven](https://img.shields.io/badge/Gestão%20De%20Dependências-Maven-green)
-![Badge amarela esverdeada de Quantidade de Dependências 9](https://img.shields.io/badge/Depend%C3%AAncias-9-yellowgreen)
+![Badge amarela esverdeada de Quantidade de Dependências 13](https://img.shields.io/badge/Depend%C3%AAncias-13-yellowgreen)
 ![Badge de linguagem utiliaza Java](https://img.shields.io/badge/Linguagem-JAVA-yellow)
 ![Badge de Status do projeto como em desenvolvimento](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellowgreen)
 ![Badge de Desenvolvedor com o nome Bruno](https://img.shields.io/badge/Desenvolvedor-Bruno-green)
