@@ -9,6 +9,7 @@
 ![Badge de Status do projeto como em desenvolvimento](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellowgreen)
 ![Badge de Desenvolvedor com o nome Bruno](https://img.shields.io/badge/Desenvolvedor-Bruno-green)
 ![Badge de Token JWT verde com Auth0](https://img.shields.io/badge/TokenJWT-Auth0-green)
+![Badge de Google Cloud branca com Compute Engine](https://img.shields.io/badge/Google%20Cloud-Compute%20Engine-white)
 
 ---
 
@@ -71,10 +72,12 @@ Por fim criei testes automatizados focando apenas nos controllers com testes que
 ---
 
 ### 📆 Semanas 3 e 4
-Nestas [semanas](https://trello.com/b/kLJ8pbV2/challenge-backend-4-semanas-3-e-4) recebemos as tarefas de implementar autenticação e também o deploy da aplicação. Infelizmente não consegui realizar o deploy, ainda preciso de mais conhecimentos e deixarei essa tarefa em aberto para realizar a implementação no futuro quando tiver mais experiência.
+Nestas [semanas](https://trello.com/b/kLJ8pbV2/challenge-backend-4-semanas-3-e-4) recebemos as tarefas de implementar autenticação e também o deploy da aplicação.
+
+![image](https://user-images.githubusercontent.com/100006703/229925110-3d31bec9-bf89-45ba-8448-1fe2463f13ba.png)
 
 #### 🔨 Forma de elaboração
-Para a implementação da parte de segurança foram adicionadas as dependências do Spring Security e também do [token JWT fornecido pelo Auth0](https://github.com/auth0/java-jwt), com isso a implementação foi realizada com BCrypt e com a criação de um novo endpoint para login, onde se é possível realizar o acesso com um usuário padrão, sendo enviado em um json os dados:
+Para a implementação da parte de segurança adicionei as dependências do Spring Security e também do [Token JWT fornecido pelo Auth0](https://github.com/auth0/java-jwt), com isso a implementação foi realizada com criptografia BCrypt para as senhas e com a criação de um novo endpoint para login (/login), onde se é possível realizar o acesso com um usuário padrão, sendo enviado em um json os dados abaixo via método POST:
 
 ```
 { 
@@ -83,11 +86,25 @@ Para a implementação da parte de segurança foram adicionadas as dependências
 }
 ```
 
-A partir daí se recebe um Token de acesso que será utilizado para realizar as requisições para todos os outros endpoints, que agora estarão bloqueados para requisições sem autorização.
+A partir deste endpoint se recebe um Token de acesso que deverá ser utilizado para realizar as requisições para todos os outros endpoints, que agora estarão bloqueados para requisições sem autorização.
 
----
+Quanto ao Deploy confesso não ter muita experiência, por isso tive muitas dificuldades, então realizei a disponibilização da API da única forma como consegui, mesmo após algumas pesquisas na internet. Futuramente pretendo realizar uma melhoria se assim for possível.
+Utilizei o serviço do Google Cloud com o Compute Engine, criando uma máquina virtual Ubuntu e instalando dentro dela o MySql e o jar da aplicação, com isso executei a aplicação dentro com o comando nohup e encessei a comunicação SSH, permitindo que a aplicação continue rodando continuamente no IP abaixo, que também está sendo usado para acessar a documentação da API.
 
-#### 📜 Tarefas da Semana 3
-- [x] Aumentar a segurança da API gerando um novo endpoint para login e realizando a verificação stateless para acesso em todas as requisições.
-- [ ] Realizar o deploy da aplicação
+```
+  http://34.151.195.83:8080
+```
+
+##### Documentação
+
+Tomei a liberdade de adicionar também uma [documentação](http://34.151.195.83:8080/swagger-ui/index.html) utilizando o Swagger UI.
+
+![image](https://user-images.githubusercontent.com/100006703/229926132-4c230be0-0f86-4313-b26a-35145e2a9226.png)
+![image](https://user-images.githubusercontent.com/100006703/229926233-294ee45e-6301-4319-9181-c6367cad1ffc.png)
+
+
+#### 📜 Tarefas das Semanas 3 e 4
+- [x] Aumentar a segurança da API gerando um novo endpoint para login e realizando a verificação stateless para acesso em todas as requisições;
+- [x] Realizar o deploy da aplicação;
+- [x] Criar Documentação. (EXTRA!)
 ---
