@@ -2,6 +2,7 @@ package br.com.alura.financas.controller;
 
 import br.com.alura.financas.domain.receita.*;
 import br.com.alura.financas.infra.exception.DadosErro;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("receitas")
+@SecurityRequirement(name = "bearer-key")
 public class ReceitaController {
 
     @Autowired

@@ -6,6 +6,7 @@ import br.com.alura.financas.domain.receita.Receita;
 import br.com.alura.financas.domain.receita.ReceitaRepository;
 import br.com.alura.financas.domain.resumo.DadosResumo;
 import br.com.alura.financas.domain.resumo.ResumoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@SecurityRequirement(name = "bearer-key")
 public class ResumoController {
 
     @Autowired
