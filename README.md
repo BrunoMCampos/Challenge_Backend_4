@@ -18,6 +18,28 @@ Projeto criado durante um evento da escola online de tecnologia [Alura](https://
 
 ---
 
+## Acesso a Documentação e endereço da API
+
+A api pode ser acessada por meio do IP
+```
+  http://34.151.195.83:8080
+```
+
+Lembrando que todas as requisições exigem o token JWT que deve ser obtido por meio de login com o usuário padrão no endpoint "/login"
+```
+{ 
+  "login": "bruno.campos@financas.com.br",
+  "senha": "123456"
+}
+```
+
+A documentação pode ser acessada por meio do link
+```
+  http://34.151.195.83:8080/swagger-ui/index.html
+```
+
+---
+
 ### 📆 Semana 1
 Nesta [primeira semana](https://trello.com/b/bQBI8NPo/challenge-backend-4-semana-1) as tarefas foram referentes a criação dos endpoints para o CRUD de receitas e despesas, respeitando as regras de negócio estabelecidas. 
 
