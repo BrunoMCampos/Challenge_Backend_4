@@ -5,11 +5,11 @@ import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record DadosAlterarReceita(
         @Length(min = 1, max = 255)
         String descricao,
         BigDecimal valor,
-        @JsonFormat(pattern = "dd/MM/yyyy")
-        LocalDate data) {
+        LocalDateTime data) {
 }

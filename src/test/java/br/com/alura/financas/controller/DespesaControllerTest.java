@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -34,9 +35,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @WithMockUser
 class DespesaControllerTest {
 
-    private final Despesa despesaEducacao = new Despesa(null, "Despesa Educacao", new BigDecimal(100), LocalDate.now(), Categoria.EDUCACAO);
-    private final Despesa despesaSemCategoria = new Despesa(null, "Despesa sem Categoria", new BigDecimal(100), LocalDate.now(), null);
-    private final Despesa despesaAlimentacao = new Despesa(null, "Despesa Alimentacao", new BigDecimal(200), LocalDate.now(), Categoria.ALIMENTACAO);
+    private final Despesa despesaEducacao = new Despesa(null, "Despesa Educacao", new BigDecimal(100), LocalDateTime.now(), Categoria.EDUCACAO);
+    private final Despesa despesaSemCategoria = new Despesa(null, "Despesa sem Categoria", new BigDecimal(100), LocalDateTime.now(), null);
+    private final Despesa despesaAlimentacao = new Despesa(null, "Despesa Alimentacao", new BigDecimal(200), LocalDateTime.now(), Categoria.ALIMENTACAO);
 
     @Autowired
     private MockMvc mvc;
@@ -227,7 +228,7 @@ class DespesaControllerTest {
     @Test
     @DisplayName("Deveria devolver código http 200 e o json apenas com as despesas daquele mês")
     void listarPorMesEAnoCenario1() throws Exception {
-        despesaEducacao.setData(LocalDate.now().plus(1L, ChronoUnit.MONTHS));
+        despesaEducacao.setData(LocalDateTime.now().plus(1L, ChronoUnit.MONTHS));
         cadastrarDespesa(despesaEducacao);
 
         cadastrarDespesa(despesaSemCategoria);
@@ -336,7 +337,7 @@ class DespesaControllerTest {
         List<Despesa> despesas = despesaRepository.findAll();
         String url = "/despesas/" + despesas.get(0).getId();
 
-        despesaAlimentacao.setData(LocalDate.now().plus(1L,ChronoUnit.MONTHS));
+        despesaAlimentacao.setData(LocalDateTime.now().plus(1L,ChronoUnit.MONTHS));
 
         MockHttpServletResponse response = alterarDespesa(url, despesaAlimentacao);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());

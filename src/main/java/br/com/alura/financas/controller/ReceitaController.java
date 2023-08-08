@@ -8,6 +8,8 @@ import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +50,7 @@ public class ReceitaController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemReceitas>> listar(Pageable pageable, @RequestParam(required = false) String descricao) {
+    public ResponseEntity<Page<DadosListagemReceitas>> listar(@PageableDefault(sort = "data", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam(required = false) String descricao) {
         Page<DadosListagemReceitas> receitas;
         if (descricao != null) {
             receitas = receitaRepository.findByDescricaoContaining(pageable, descricao).map(DadosListagemReceitas::new);

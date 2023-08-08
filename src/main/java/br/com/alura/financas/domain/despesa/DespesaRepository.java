@@ -6,13 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @SuppressWarnings("unused")
 public interface DespesaRepository extends JpaRepository<Despesa,Long> {
 
     @Query("select d from Despesa d where d.descricao = :descricao and month(d.data) = month(:data) and year(d.data) = year(:data)")
-    Optional<Despesa> findDespesaComMesmaDescricaoNoMesmoMesEAno(String descricao, LocalDate data);
+    Optional<Despesa> findDespesaComMesmaDescricaoNoMesmoMesEAno(String descricao, LocalDateTime data);
 
     Page<Despesa> findByDescricaoContaining(Pageable pageable, String descricao);
 

@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record DadosCadastrarDespesa(
         @NotBlank
@@ -15,7 +16,6 @@ public record DadosCadastrarDespesa(
         @NotNull
         BigDecimal valor,
         @NotNull
-        @JsonFormat(pattern = "dd/MM/yyyy")
-        LocalDate data,
+        LocalDateTime data,
         Categoria categoria) {
 }

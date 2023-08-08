@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-public record DadosDetalharReceita(String descricao, BigDecimal valor, @JsonFormat(pattern = "dd/MM/yyyy") LocalDate data) {
+public record DadosDetalharReceita(String descricao, BigDecimal valor, LocalDateTime data) {
     public DadosDetalharReceita(Receita receita) {
         this(
                 receita.getDescricao(),

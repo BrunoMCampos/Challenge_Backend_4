@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -49,16 +50,16 @@ class ReceitaControllerTest {
     @Autowired
     private ReceitaRepository receitaRepository;
 
-    private final Receita receitaCompleta = new Receita(null, "Receita", new BigDecimal(100), LocalDate.now());
-    private final Receita receitaCompletaVenda = new Receita(null, "Venda", new BigDecimal(220), LocalDate.now());
-    private final Receita receitaCompletaEntrada = new Receita(null, "Entrada", new BigDecimal(330), LocalDate.now());
+    private final Receita receitaCompleta = new Receita(null, "Receita", new BigDecimal(100), LocalDateTime.now());
+    private final Receita receitaCompletaVenda = new Receita(null, "Venda", new BigDecimal(220), LocalDateTime.now());
+    private final Receita receitaCompletaEntrada = new Receita(null, "Entrada", new BigDecimal(330), LocalDateTime.now());
 
     private MockHttpServletResponse cadastrarReceita(Receita receita) throws Exception {
         return mvc.perform(
                         post("/receitas")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(
-                                        dadosCadastrarReceitaJson.write(
+                                     dadosCadastrarReceitaJson.write(
                                                 new DadosCadastrarReceita(
                                                         receita.getDescricao(),
                                                         receita.getValor(),
@@ -199,7 +200,7 @@ class ReceitaControllerTest {
     @Test
     @DisplayName("Deveria devolver código http 200 e o json apenas com as despesas daquele mês")
     void listarPorMesEAnoCenario1() throws Exception {
-        receitaCompletaEntrada.setData(LocalDate.now().plus(1L, ChronoUnit.MONTHS));
+        receitaCompletaEntrada.setData(LocalDateTime.now().plus(1L, ChronoUnit.MONTHS));
         cadastrarReceita(receitaCompletaEntrada);
 
         cadastrarReceita(receitaCompleta);
@@ -306,7 +307,7 @@ class ReceitaControllerTest {
         List<Receita> receitas = receitaRepository.findAll();
         String url = "/receitas/" + receitas.get(0).getId();
 
-        receitaCompleta.setData(LocalDate.now().plus(1L,ChronoUnit.MONTHS));
+        receitaCompleta.setData(LocalDateTime.now().plus(1L,ChronoUnit.MONTHS));
 
         MockHttpServletResponse response = alterarReceita(url, receitaCompleta);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());

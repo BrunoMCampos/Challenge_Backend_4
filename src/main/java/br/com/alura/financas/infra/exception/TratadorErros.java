@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,8 +35,13 @@ public class TratadorErros {
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<String> tratarErroBadCredentials() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
+    public ResponseEntity<DadosErro> tratarErroBadCredentials() {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new DadosErro("login","Credenciais inválidas"));
+    }
+
+    @ExceptionHandler(InternalAuthenticationServiceException.class)
+    public ResponseEntity<DadosErro> tratarErroBadCredentials2() {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new DadosErro("login","Credenciais inválidas"));
     }
 
     @ExceptionHandler(AccessDeniedException.class)

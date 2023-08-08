@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record DadosListagemDespesas(
         String descricao,
         BigDecimal valor,
 
-        @JsonFormat(pattern = "dd/MM/yyyy")
-        LocalDate data,
+        LocalDateTime data,
 
         Categoria categoria) {
 

@@ -31,6 +31,8 @@ public class Usuario implements UserDetails {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
+    public Long getId(){return this.id;}
+
     @Override
     public String getPassword() {
         return this.senha;

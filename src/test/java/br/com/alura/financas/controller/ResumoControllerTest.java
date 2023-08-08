@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,13 +54,13 @@ class ResumoControllerTest {
     @Autowired
     private JacksonTester<DadosCadastrarDespesa> dadosCadastrarDespesaJson;
 
-    private final Despesa despesaMoradiaDentroDoMes = new Despesa(null, "Despesa Moradia",new BigDecimal(1200), LocalDate.now(), Categoria.MORADIA);
-    private final Despesa despesaSaudeDentroDoMes = new Despesa(null, "Despesa Saude",new BigDecimal(600), LocalDate.now(), Categoria.SAUDE);
-    private final Despesa despesaOutrasForaDoMes = new Despesa(null, "Despesa Outras",new BigDecimal(200), LocalDate.now().plus(1L, ChronoUnit.MONTHS), Categoria.OUTRAS);
+    private final Despesa despesaMoradiaDentroDoMes = new Despesa(null, "Despesa Moradia",new BigDecimal(1200), LocalDateTime.now(), Categoria.MORADIA);
+    private final Despesa despesaSaudeDentroDoMes = new Despesa(null, "Despesa Saude",new BigDecimal(600), LocalDateTime.now(), Categoria.SAUDE);
+    private final Despesa despesaOutrasForaDoMes = new Despesa(null, "Despesa Outras",new BigDecimal(200), LocalDateTime.now().plus(1L, ChronoUnit.MONTHS), Categoria.OUTRAS);
 
-    private final Receita receitaVendaDentroDoMes = new Receita(null, "Receita Venda", new BigDecimal(1500), LocalDate.now());
-    private final Receita receitaSalarioDentroDoMes = new Receita(null, "Receita Salario", new BigDecimal(2500), LocalDate.now());
-    private final Receita receitaAluguelForaDoMes = new Receita(null, "Receita Aluguel", new BigDecimal(1000), LocalDate.now().plus(1L,ChronoUnit.MONTHS));
+    private final Receita receitaVendaDentroDoMes = new Receita(null, "Receita Venda", new BigDecimal(1500), LocalDateTime.now());
+    private final Receita receitaSalarioDentroDoMes = new Receita(null, "Receita Salario", new BigDecimal(2500), LocalDateTime.now());
+    private final Receita receitaAluguelForaDoMes = new Receita(null, "Receita Aluguel", new BigDecimal(1000), LocalDateTime.now().plus(1L,ChronoUnit.MONTHS));
 
     private void cadastrarReceita(Receita receita) throws Exception {
         mvc.perform(

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Date;
 
 @Service
 public class TokenService {
@@ -18,7 +19,7 @@ public class TokenService {
     @Value("${api.security.token.segredo}")
     private String segredo;
 
-    public String gerarToken(Usuario usuario){
+    public String gerarToken(Usuario usuario) {
         try {
             Algorithm algoritmo = Algorithm.HMAC256(segredo);
             return JWT.create()
@@ -26,16 +27,16 @@ public class TokenService {
                     .withSubject(usuario.getLogin())
                     .withExpiresAt(dataExpiracao())
                     .sign(algoritmo);
-        } catch (JWTCreationException exception){
-            throw new RuntimeException("Erro ao gerar o token jwt",exception);
+        } catch (JWTCreationException exception) {
+            throw new RuntimeException("Erro ao gerar o token jwt", exception);
         }
     }
 
-    private Instant dataExpiracao(){
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+    private Instant dataExpiracao() {
+        return LocalDateTime.now().plusMinutes(20).toInstant(ZoneOffset.of("-03:00"));
     }
 
-    public String getSubject(String tokenJWT){
+    public String getSubject(String tokenJWT) {
         try {
             Algorithm algoritmo = Algorithm.HMAC256(segredo);
             return JWT.require(algoritmo)
@@ -43,7 +44,20 @@ public class TokenService {
                     .build()
                     .verify(tokenJWT)
                     .getSubject();
-        } catch (JWTVerificationException exception){
+        } catch (JWTVerificationException exception) {
+            throw new RuntimeException("Token JWT inválido ou expirado!");
+        }
+    }
+
+    public Date getExpiresAt(String tokenJWT) {
+        try {
+            Algorithm algoritmo = Algorithm.HMAC256(segredo);
+            return JWT.require(algoritmo)
+                    .withIssuer("API de Finanças")
+                    .build()
+                    .verify(tokenJWT)
+                    .getExpiresAt();
+        } catch (JWTVerificationException exception) {
             throw new RuntimeException("Token JWT inválido ou expirado!");
         }
     }
