@@ -41,7 +41,7 @@ A documentação pode ser acessada por meio do link
 ---
 
 ### 📆 Semana 1
-Nesta [primeira semana](https://trello.com/b/bQBI8NPo/challenge-backend-4-semana-1) as tarefas foram referentes a criação dos endpoints para o CRUD de receitas e despesas, respeitando as regras de negócio estabelecidas. 
+Nesta primeira semana as tarefas foram referentes a criação dos endpoints para o CRUD de receitas e despesas, respeitando as regras de negócio estabelecidas. 
 
 ![image](https://user-images.githubusercontent.com/100006703/229295804-e30ee519-5cf3-43ac-aa85-4ef2f087fb0a.png)
 ![image](https://user-images.githubusercontent.com/100006703/229295816-4b355792-773c-4596-a43c-0093155e28b0.png)
@@ -74,7 +74,7 @@ Também utilizei de classes Service para poder gerir melhor as validações, rea
 ---
 
 ### 📆 Semana 2
-Nesta [segunda semana](https://trello.com/b/4V5WcXVi/challenge-backend-4-semana-2) recebemos um novo quadro no Trello com as informações que precisariam ser incluidas ou alteradas no sistema, considerando que ele foi liberado para a utilização e foi recebido o feedback dos clientes da aplicação, sendo necessário realizar adaptações no banco de dados e o desenvolvimento de novas funcionalidades.
+Nesta segunda semana recebemos um novo quadro no Trello com as informações que precisariam ser incluidas ou alteradas no sistema, considerando que ele foi liberado para a utilização e foi recebido o feedback dos clientes da aplicação, sendo necessário realizar adaptações no banco de dados e o desenvolvimento de novas funcionalidades.
 
 ![Card Trello](https://user-images.githubusercontent.com/100006703/229295595-2fdbf6df-57e7-4ad7-850e-b25ab370aaf1.png)
 
@@ -94,7 +94,7 @@ Por fim criei testes automatizados focando apenas nos controllers com testes que
 ---
 
 ### 📆 Semanas 3 e 4
-Nestas [semanas](https://trello.com/b/kLJ8pbV2/challenge-backend-4-semanas-3-e-4) recebemos as tarefas de implementar autenticação e também o deploy da aplicação.
+Nestas semanas recebemos as tarefas de implementar autenticação e também o deploy da aplicação.
 
 ![image](https://user-images.githubusercontent.com/100006703/229925110-3d31bec9-bf89-45ba-8448-1fe2463f13ba.png)
 
