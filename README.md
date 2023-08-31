@@ -9,34 +9,11 @@
 ![Badge de Status do projeto como em desenvolvimento](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellowgreen)
 ![Badge de Desenvolvedor com o nome Bruno](https://img.shields.io/badge/Desenvolvedor-Bruno-green)
 ![Badge de Token JWT verde com Auth0](https://img.shields.io/badge/TokenJWT-Auth0-green)
-![Badge de Google Cloud branca com Compute Engine](https://img.shields.io/badge/Google%20Cloud-Compute%20Engine-white)
 
 ---
 
 ## 📋 Descrição do Projeto
 Projeto criado durante um evento da escola online de tecnologia [Alura](https://www.alura.com.br/) onde todos os alunos receberam um conjunto de informações via [Trello](https://trello.com) e instruções via lives e videos gravados para criarem uma API REST para um projeto de gestão financeira. Os cards Trello são dividios semanalmente, sendo disponibilizado um novo quadro a cada semana.
-
----
-
-## Acesso a Documentação e endereço da API
-
-A api pode ser acessada por meio do IP
-```
-  http://34.151.195.83:8080
-```
-
-Lembrando que todas as requisições exigem o token JWT que deve ser obtido por meio de login com o usuário padrão no endpoint "/login"
-```
-{ 
-  "login": "bruno.campos@financas.com.br",
-  "senha": "123456"
-}
-```
-
-A documentação pode ser acessada por meio do link
-```
-  http://34.151.195.83:8080/swagger-ui/index.html
-```
 
 ---
 
@@ -110,12 +87,7 @@ Para a implementação da parte de segurança adicionei as dependências do Spri
 
 A partir deste endpoint se recebe um Token de acesso que deverá ser utilizado para realizar as requisições para todos os outros endpoints, que agora estarão bloqueados para requisições sem autorização.
 
-Quanto ao Deploy confesso não ter muita experiência, por isso tive muitas dificuldades, então realizei a disponibilização da API da única forma como consegui, mesmo após algumas pesquisas na internet. Futuramente pretendo realizar uma melhoria se assim for possível.
-Utilizei o serviço do Google Cloud com o Compute Engine, criando uma máquina virtual Ubuntu e instalando dentro dela o MySql e o jar da aplicação, com isso executei a aplicação dentro com o comando nohup e encessei a comunicação SSH, permitindo que a aplicação continue rodando continuamente no IP abaixo, que também está sendo usado para acessar a documentação da API.
-
-```
-  http://34.151.195.83:8080
-```
+Quanto ao Deploy confesso não ter muita experiência, por isso tive muitas dificuldades, então resolvi deixar esta parte desativada por hora.
 
 ##### Documentação
 
